@@ -1,5 +1,6 @@
 // use std::path::PathBuf;
 use structopt::StructOpt;
+use std::process::Command;
 use std::env;
 use std::fs;
 use std::io::ErrorKind;
@@ -58,7 +59,7 @@ fn main() {
                 },
                 Err(e) => {
                     panic!("error retrieving the path of the current directory: {:?}", e);
-                }
+                },
             };
             // get the string representation of the dir PathBuf
             // panic if empty
@@ -78,17 +79,16 @@ fn main() {
                         return;
                     },
                     _ => panic!("error creating project directory: {:?}", error),
-                } 
+                },
             };
 
             // make shared_data, bin, src folders inside the project folder
             for folder in ["shared_data", "bin", "src"].iter() {
                 let mut path = path.to_owned();
                 path.push(folder);
-
                 let path_str = match path.to_str() {
                     Some(v) => v,
-                    None => panic!("error constructing project path"),
+                    None => panic!("error constructing subdirectory path"),
                 };
 
                 match fs::create_dir(path_str) {
@@ -101,10 +101,23 @@ fn main() {
                         _ => panic!("error creating {} subdirectory: {:?}", folder, error),
                     } 
                 };
-            }            
+            };
 
             // git init the shared_data folder
+            let mut shared_data_path = path.to_owned();
+            shared_data_path.push("shared_data");
+            let shared_data_path_str = match shared_data_path.to_str() {
+                Some(v) => v,
+                None => panic!("error constructing shared data path"),
+            };
+
+            match Command::new("git").arg("init").arg(shared_data_path_str).output() {
+                Ok(_) => println!("initialized git version control for shared data in {}", shared_data_path_str),
+                Err(e) => panic!("error initializing git version control in shared_data: {:?}", e),
+            };
+
             // create a .project file inside the project folder
+            
         },
         Tsukuru::Task {project, name} => {
             println!("project: {}, task: {}", project, name)
