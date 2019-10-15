@@ -53,9 +53,9 @@ fn main() {
             // retrieve the current directory
             // if successful, append name
             let path = match env::current_dir() {
-                Ok(mut v) =>  {
-                    v.push(&name);
-                    v
+                Ok(mut path) =>  {
+                    path.push(&name);
+                    path
                 },
                 Err(e) => {
                     panic!("error retrieving the path of the current directory: {:?}", e);
@@ -64,7 +64,7 @@ fn main() {
             // get the string representation of the dir PathBuf
             // panic if empty
             let path_str = match path.to_str() {
-                Some(v) => v,
+                Some(path_str) => path_str,
                 None => panic!("error constructing project path"),
             };
 
@@ -87,7 +87,7 @@ fn main() {
                 let mut path = path.to_owned();
                 path.push(folder);
                 let path_str = match path.to_str() {
-                    Some(v) => v,
+                    Some(path_str) => path_str,
                     None => panic!("error constructing subdirectory path"),
                 };
 
@@ -107,7 +107,7 @@ fn main() {
             let mut shared_data_path = path.to_owned();
             shared_data_path.push("shared_data");
             let shared_data_path_str = match shared_data_path.to_str() {
-                Some(v) => v,
+                Some(path_str) => path_str,
                 None => panic!("error constructing shared data path"),
             };
 
