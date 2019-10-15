@@ -117,7 +117,20 @@ fn main() {
             };
 
             // create a .project file inside the project folder
-            
+            let mut proj_marker_path = path.to_owned();
+            proj_marker_path.push(".project");
+            let proj_marker_path_str = match proj_marker_path.to_str() {
+                Some(path_str) => path_str,
+                None => panic!("error constructing .project path"),
+            };
+            println!("{}", &path_str);
+            println!("{}", &proj_marker_path_str);
+
+            // Create a .project file
+            match fs::File::create(proj_marker_path_str) {
+                Ok(_) => println!("created .project file in {}", &path_str),
+                Err(e) => panic!("error creating .project file in {}: {:?}", &path_str, e),
+            };
         },
         Tsukuru::Task {project, name} => {
             println!("project: {}, task: {}", project, name)
