@@ -52,6 +52,9 @@ fn main() {
             // TODO: Refactor to be static methods of the enum
             println!("project: {}", &name);
 
+            // TODO: validate name
+            // format: Uppercase_first_snake_case
+
             // retrieve the current directory
             // if successful, append name
             let path = match env::current_dir() {
