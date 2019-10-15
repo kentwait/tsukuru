@@ -81,8 +81,28 @@ fn main() {
                 } 
             };
 
-            // make project folder using the name
             // make shared_data, bin, src folders inside the project folder
+            for folder in ["shared_data", "bin", "src"].iter() {
+                let mut path = path.to_owned();
+                path.push(folder);
+
+                let path_str = match path.to_str() {
+                    Some(v) => v,
+                    None => panic!("error constructing project path"),
+                };
+
+                match fs::create_dir(path_str) {
+                    Ok(_) => println!("  created {}", path_str),
+                    Err(error) => match error.kind() {
+                        ErrorKind::AlreadyExists => {
+                            println!("{} subdirectory already exists", folder);
+                            continue;
+                        },
+                        _ => panic!("error creating {} subdirectory: {:?}", folder, error),
+                    } 
+                };
+            }            
+
             // git init the shared_data folder
             // create a .project file inside the project folder
         },
