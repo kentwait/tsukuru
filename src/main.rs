@@ -48,6 +48,8 @@ enum Tsukuru {
 fn main() {
     match Tsukuru::from_args() {
         Tsukuru::Project {name} => {
+
+            // TODO: Refactor to be static methods of the enum
             println!("project: {}", &name);
 
             // retrieve the current directory
