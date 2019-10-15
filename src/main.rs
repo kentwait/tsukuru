@@ -49,6 +49,38 @@ fn main() {
         Tsukuru::Project {name} => {
             println!("project: {}", name);
 
+            // retrieve the current directory
+            // if successful, append name
+            let path = match env::current_dir() {
+                Ok(mut v) =>  {
+                    v.push(name);
+                    v
+                },
+                Err(e) => {
+                    panic!("error retrieving the path of the current directory: {:?}", e);
+                }
+            };
+            // get the string representation of the dir PathBuf
+            // panic if empty
+            let path_str = match path.to_str() {
+                Some(v) => v,
+                None => panic!("error constructing project path"),
+            };
+
+            // create project directory
+            // if directory already exists, print message and exit
+            // panic on error
+            match fs::create_dir(path_str) {
+                Ok(_) => println!("created {}", path_str),
+                Err(error) => match error.kind() {
+                    ErrorKind::AlreadyExists => {
+                        println!("project directory \"{}\" already exists", path_str);
+                        return;
+                    },
+                    _ => panic!("error creating project directory: {:?}", error),
+                } 
+            };
+
             // make project folder using the name
             // make shared_data, bin, src folders inside the project folder
             // git init the shared_data folder
