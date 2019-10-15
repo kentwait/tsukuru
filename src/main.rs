@@ -47,13 +47,13 @@ enum Tsukuru {
 fn main() {
     match Tsukuru::from_args() {
         Tsukuru::Project {name} => {
-            println!("project: {}", name);
+            println!("project: {}", &name);
 
             // retrieve the current directory
             // if successful, append name
             let path = match env::current_dir() {
                 Ok(mut v) =>  {
-                    v.push(name);
+                    v.push(&name);
                     v
                 },
                 Err(e) => {
@@ -71,7 +71,7 @@ fn main() {
             // if directory already exists, print message and exit
             // panic on error
             match fs::create_dir(path_str) {
-                Ok(_) => println!("created {}", path_str),
+                Ok(_) => println!("created project {} in {}", &name, path_str),
                 Err(error) => match error.kind() {
                     ErrorKind::AlreadyExists => {
                         println!("project directory \"{}\" already exists", path_str);
