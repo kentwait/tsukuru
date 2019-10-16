@@ -2,6 +2,7 @@ use std::io::prelude::*;
 use structopt::StructOpt;
 use std::process::Command;
 use std::env;
+use std::path::PathBuf;
 use std::fs;
 use std::io::ErrorKind;
 
@@ -78,13 +79,14 @@ fn main() {
 
             // retrieve the current directory
             // if successful, append name
-            let path = match env::current_dir() {
-                Ok(mut path) =>  {
+            let path = match env::var("PROJ_BASEDIR") {
+                Ok(val) => {
+                    let mut path = PathBuf::from(val);
                     path.push(&name);
                     path
                 },
                 Err(e) => {
-                    panic!("error retrieving the path of the current directory: {:?}", e);
+                    panic!("error retrieving the project base directory path: {:?}", e);
                 },
             };
             // get the string representation of the dir PathBuf
@@ -160,23 +162,22 @@ fn main() {
 
             // TODO: Get from PROJ_BASEDIR env var instead of current dir
             // locate the project folder, error if it does not exist
-            let path = match env::current_dir() {
-                Ok(mut path) =>  {
+            let path = match env::var("PROJ_BASEDIR") {
+                Ok(val) => {
+                    let mut path = PathBuf::from(val);
                     path.push(&project);
                     if path.exists() {
                         path.push(&name);
-                        path
                     } else {
                         panic!("error creating a new task for project {}\nproject \"{}\" does not exist",
                             &project, &project);
                     }
+                    path
                 },
                 Err(e) => {
-                    panic!("error retrieving the path of the current directory: {:?}", e);
+                    panic!("error retrieving the project base directory path: {:?}", e);
                 },
             };
-            
-
             // make a task folder inside the specified project folder
             let path_str = match path.to_str() {
                 Some(path_str) => path_str,
@@ -247,8 +248,9 @@ fn main() {
             // locate the project and task folders, error if it does not exist
             // TODO: Get from PROJ_BASEDIR env var instead of current dir
             // locate the project folder, error if it does not exist
-            let mut path = match env::current_dir() {
-                Ok(mut path) =>  {
+            let mut path = match env::var("PROJ_BASEDIR") {
+                Ok(val) => {
+                    let mut path = PathBuf::from(val);
                     path.push(&project);
                     if !path.exists() {
                         panic!("error creating a new notebook for task {} in {}\nproject \"{}\" does not exist",
@@ -262,7 +264,7 @@ fn main() {
                     path
                 },
                 Err(e) => {
-                    panic!("error retrieving the path of the current directory: {:?}", e);
+                    panic!("error retrieving the project base directory path: {:?}", e);
                 },
             };
             // create a new jupyter notebook inside the specified task
