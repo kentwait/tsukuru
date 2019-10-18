@@ -8,8 +8,32 @@ use std::io::ErrorKind;
 
 // TODO: Create templates for different kernels
 static IPYNB: &'static str = 
-r#"{
+r#######"{
  "cells": [
+  {
+   "cell_type": "markdown",
+   "metadata": {},
+   "source": [
+    "# Notebook title\n",
+    "\n",
+    "Created: YYYY/MM/DD hh:mm"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": null,
+   "metadata": {},
+   "outputs": [],
+   "source": [
+    "%matplotlib inline\n",
+    "\n",
+    "import pickle as pkl\n",
+    "\n",
+    "import numpy as np\n",
+    "import pandas as pd\n",
+    "import matplotlib.pyplot as plt",
+   ]
+  },
   {
    "cell_type": "code",
    "execution_count": null,
@@ -39,7 +63,7 @@ r#"{
  },
  "nbformat": 4,
  "nbformat_minor": 2
-}"#;
+}"#######;
 
 #[derive(Debug, StructOpt)]
 #[structopt(name = "tsukuru", about = "Create new projects and notebooks")]
