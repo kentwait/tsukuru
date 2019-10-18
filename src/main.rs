@@ -68,6 +68,11 @@ r#######"{
  "nbformat_minor": 2
 }"#######;
 
+static TASK_GITIGNORE: &'static str =
+r#######"/data
+*.ipynb
+"#######;
+
 #[derive(Debug, StructOpt)]
 #[structopt(name = "tsukuru", about = "Create new projects and notebooks")]
 enum Tsukuru {
@@ -308,7 +313,7 @@ fn main() {
                     if !path.exists() {
                         panic!("error creating a new notebook for task {} in {}\nproject \"{}\" does not exist",
                             &task, &project, &project);
-                    }
+                    } 
                     path.push(&task);
                     if !path.exists() {
                         panic!("error creating a new notebook for task {} in {}\ntask \"{}\" does not exist",
