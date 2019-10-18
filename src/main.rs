@@ -43,6 +43,9 @@ r#######"{
   }
  ],
  "metadata": {
+  "jupytext": {
+   "formats": "ipynb,py:percent"
+  },
   "kernelspec": {
    "display_name": "Python 3",
    "language": "python",
