@@ -31,7 +31,7 @@ r#######"{
     "\n",
     "import numpy as np\n",
     "import pandas as pd\n",
-    "import matplotlib.pyplot as plt",
+    "import matplotlib.pyplot as plt"
    ]
   },
   {
